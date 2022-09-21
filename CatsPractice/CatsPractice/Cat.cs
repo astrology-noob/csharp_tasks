@@ -25,6 +25,8 @@ namespace CatsPractice
         const int eyesCount = 2;
         const int minWeight = 1000;
         const int maxWeight = 10000;
+
+        private bool isAlive = true;
         public float weight;
         private furColor CatFurColor;
         private bool HasTail;
@@ -39,6 +41,7 @@ namespace CatsPractice
         public Cat(bool tail, furColor fur, float catWeight)
         {
             weight = catWeight;
+            catCount++;
         }
 
         public bool GetaHasTail()
@@ -60,31 +63,42 @@ namespace CatsPractice
 
         public bool IsAlive()
         {
-            return weight >= minWeight & weight <= maxWeight? true : false;
+            isAlive = weight >= minWeight & weight <= maxWeight;
+            return isAlive;
         }
 
         public void Meow()
         {
             if (IsAlive())
+            {
                 weight -= 10;
-            else Console.WriteLine("Cat is dead");
+                Console.WriteLine("Cat meowed");
+                if (!IsAlive()) catCount--;
+            }
+            else Console.WriteLine("Dead cat can't Meow");
         }
 
-        public void Feed(float food)
+        public void Eat(float food)
         {
             if (IsAlive())
             {
                 eatenFood += food;
                 weight += food;
+                Console.WriteLine("Cat ate");
+                if (!IsAlive()) catCount--;
             }
-            else Console.WriteLine("Cat is dead");
+            else Console.WriteLine("Dead cat can't Eat");
         }
 
         public void Pee()
         {
             if (IsAlive())
+            {
                 weight -= 20;
-            else Console.WriteLine("Cat is dead");
+                Console.WriteLine("Cat peed");
+                if (!IsAlive()) catCount--;
+            }
+            else Console.WriteLine("Dead cat can't Pee");
         }
 
         public static int GetCatCount()
