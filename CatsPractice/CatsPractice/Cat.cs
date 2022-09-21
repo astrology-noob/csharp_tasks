@@ -1,59 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.Loader;
-using System.Drawing;
-
-namespace CatsPractice
+﻿namespace CatsPractice
 {
-    static class Loader
-    {
-        public static Cat GetKitten(bool hasTail, Cat.furColor furColor)
-        {
-            return new Cat(hasTail, furColor, 1000.0f);
-        }
-    }
-
-    internal class Cat : ICloneable
+    internal class Cat
     {
         private static int catCount = 0;
-
-        public enum furColor { Black = 0, White = 1, Ginger = 2 }
         
         const int eyesCount = 2;
         const int minWeight = 1000;
         const int maxWeight = 10000;
 
-        private bool isAlive = true;
-        public float weight;
-        private furColor CatFurColor;
+        private bool IsAlive;
+        public float weight { get; private set; }
+        public FurColor CatFurColor { get; }
         private bool HasTail;
 
-        public Cat(bool tail, furColor fur)
+        public Cat(bool tail, FurColor fur, bool isAlive = true)
         {
-            CatFurColor = fur;
+            IsAlive = isAlive;
             HasTail = tail;
-            catCount++;
+            CatFurColor = fur;
+            if (IsAlive)
+                catCount++;
         }
 
-        public Cat(bool tail, furColor fur, float catWeight)
+        public Cat(bool tail, FurColor fur, float catWeight, bool isAlive = true) : this(tail, fur, isAlive)
         {
             weight = catWeight;
-            catCount++;
         }
 
-        public bool GetaHasTail()
+        public bool GetHasTail()
         {
             return HasTail;
         }
 
-        public furColor GetFurColor()
+        public FurColor GetFurColor()
         {
             return CatFurColor;
         }
-
 
         private float eatenFood = 0;
         public float GetEatenFood()
@@ -61,42 +43,39 @@ namespace CatsPractice
             return eatenFood;
         }
 
-        public bool IsAlive()
+        public bool GetIsAlive()
         {
-            isAlive = weight >= minWeight & weight <= maxWeight;
-            return isAlive;
+            IsAlive = weight >= minWeight & weight <= maxWeight;
+            return IsAlive;
         }
 
         public void Meow()
         {
-            if (IsAlive())
+            if (GetIsAlive())
             {
                 weight -= 10;
-                Console.WriteLine("Cat meowed");
-                if (!IsAlive()) catCount--;
+                if (!GetIsAlive()) catCount--;
             }
             else Console.WriteLine("Dead cat can't Meow");
         }
 
         public void Eat(float food)
         {
-            if (IsAlive())
+            if (GetIsAlive())
             {
                 eatenFood += food;
                 weight += food;
-                Console.WriteLine("Cat ate");
-                if (!IsAlive()) catCount--;
+                if (!GetIsAlive()) catCount--;
             }
             else Console.WriteLine("Dead cat can't Eat");
         }
 
         public void Pee()
         {
-            if (IsAlive())
+            if (GetIsAlive())
             {
                 weight -= 20;
-                Console.WriteLine("Cat peed");
-                if (!IsAlive()) catCount--;
+                if (!GetIsAlive()) catCount--;
             }
             else Console.WriteLine("Dead cat can't Pee");
         }
@@ -106,9 +85,9 @@ namespace CatsPractice
             return catCount;
         }
 
-        public object Clone()
+        public Cat Clone()
         {
-            return new Cat(HasTail, CatFurColor, weight);
+            return (Cat)MemberwiseClone();
         }
     }
 }
