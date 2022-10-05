@@ -32,8 +32,8 @@
 //numbers[0] = 10;
 //numbers[1] = 13;
 
-
 //Console.WriteLine(NearToTen(numbers));
+
 
 string FindPrefix(string[] str_array)
 {
@@ -62,8 +62,9 @@ string FindPrefix(string[] str_array)
 //words[1] = "doggy";
 //words[2] = "dogecar";
 
-
 //Console.WriteLine(FindPrefix(words));
+
+
 
 bool FindSame(int[] num_array)
 {
@@ -71,13 +72,11 @@ bool FindSame(int[] num_array)
 
     for (int i = 0; i < num_array.Length; i++)
     {
-        if (!num_set.Contains(num_array[i]))
-        {
-            num_set.Add(num_array[i]);
-        }
+        if (num_set.Contains(num_array[i])) continue;
+        num_set.Add(num_array[i]);
     }
     
-    return !(num_array.Length == num_set.Count);
+    return num_array.Length != num_set.Count;
 }
 
 int[] numbers = new int[5];
@@ -87,6 +86,5 @@ numbers[1] = 11;
 numbers[2] = 12;
 numbers[3] = 13;
 numbers[4] = 14;
-
 
 Console.WriteLine(FindSame(numbers));
